@@ -18,7 +18,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 
 app.get('/data', function(req, res)
 {
-	res.send('Text: ' + '<strong>' + getCachedInfo.getData() + '<strong>')
+	res.send('<strong>' + getCachedInfo.getData() + '<strong>')
 })
 
 app.listen(3000, function()
