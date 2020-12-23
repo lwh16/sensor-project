@@ -9,14 +9,19 @@
 
 const express = require('express')
 const getCachedInfo = require('./Information_cache')
+const path = require('path')
 
 const app = express()
 
 app.get('/text', function(req, res)
 {
-	res.send('Text: ' + '<strong>' + getCachedInfo.getData() + '<strong>')
+	reo.send('Text: ' + '<strong>' + getCachedInfo.getData() + '<strong>')
 })
 
+app.get('/public', function(req, res)
+{
+	res.sendFile(path.join(__dirname, '/index.html'))
+})
 
 app.listen(3000, function()
 {

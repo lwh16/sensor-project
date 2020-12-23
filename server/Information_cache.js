@@ -26,7 +26,7 @@ setInterval(() =>
 		//if no error, then set the readings
 		cache = data
 	})
-}, 5000)
+}, 1000)
 
 //this exposes only the cached values
-module.exports.getData = () => cache + '...or is it???'
+module.exports.getData = () => cache

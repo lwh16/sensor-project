@@ -1,16 +1,28 @@
+//index.js
+//----------------------------------------------------------------------
+//Luke Holland
+//22nd December 2020
+//----------------------------------------------------------------------
+//Program that creates the node server and then access text file
+//information through the cached info from Information_cache.js
+//----------------------------------------------------------------------
+
 const express = require('express')
+const getCachedInfo = require('./Information_cache')
+const path = require('path')
 
 const app = express()
 
-app.get('/hello', function(req, res) {
-	res.send('HELLO');
-	});
+//use the express.static middleware
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
-app.listen(3000, function(){
-<<<<<<< HEAD
-	console.log('Server listening on port 3000 0- index');
-	});
-=======
- console.log('Server listening on port 3000!!');
+app.get('/data', function(req, res)
+{
+	res.send('Text: ' + '<strong>' + getCachedInfo.getData() + '<strong>')
+})
+
+app.listen(3000, function()
+{
+	console.log('index.js listening on port 3000');
 });
->>>>>>> a38c6775ab28c8a2f1164ed152da91a03fc8e515
+	
