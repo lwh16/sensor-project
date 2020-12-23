@@ -18,7 +18,9 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 
 app.get('/data', function(req, res)
 {
-	res.send('<strong>' + getCachedInfo.getData() + '<strong>')
+	res.json({
+		value: getCachedInfo.getData() 
+	})
 })
 
 app.listen(3000, function()
