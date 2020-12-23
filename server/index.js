@@ -1,14 +1,11 @@
-const express = require('express');
-const app = express();
+const express = require('express')
 
-app.get('/temperature', function(req, res) {
-  res.send('24 °C');
-});
+const app = express()
 
-app.get('/humidity', function(req, res) {
- res.send('48%');
-});
+app.get('/hello', function(req, res) {
+	res.send('HELLO');
+	});
 
 app.listen(3000, function(){
- console.log('Server listening on port 3000');
-});
+	console.log('Server listening on port 3000 0- index');
+	});
