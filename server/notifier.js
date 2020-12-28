@@ -1,6 +1,4 @@
-/**
- * Define the listeners (for temperature and humidity)
- */
+
 const listeners = 
 {
     data: []
