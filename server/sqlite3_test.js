@@ -5,13 +5,13 @@ instance
 used in the previous chapter
  * We want the absolute path of the file, for better
   clarity, hence, the use of path.resolve
- * The location inside path.resolve, is the location of the 
+ * The location inside path.resolve, is the location of the
  sqlite.db file relative to this one
 */
 const sqlite3 = require('sqlite3')
 const path = require('path')
 const db = new 
-  sqlite3.Database(path.resolve('./.sqlite.db'))
+  sqlite3.Database('media/pi/DATABASE/Test_Database/test.db')
 
 /**
  * The "serialize" method of the db instance makes sure
