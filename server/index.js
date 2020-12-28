@@ -10,6 +10,7 @@
 const express = require('express')
 const getCachedInfo = require('./Information_cache')
 const path = require('path')
+const database_ops = require('./database_ops')
 
 const app = express()
 
@@ -20,6 +21,20 @@ app.get('/data', function(req, res)
 {
 	res.json({
 		value: getCachedInfo.getData() 
+	})
+})
+
+app.get('/data/history', function(req, res)
+{
+	database_ops.fetchReadings('data', 50, (err, results) =>
+	{
+		if (err)
+		{
+			console.error(err)
+			return res.status(500).end()
+		}
+		
+		res.json(results.reverse())
 	})
 })
 
