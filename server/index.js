@@ -44,22 +44,22 @@ io.on('connection', socket =>
 	{
 		socket.emit('new-data', {value: newData })
 	}
-}
 
-/**
-* Subscribe the listeners that we just defined to the 
-"temperature" and "humidity" events
-*/
-subscribe(pushData, 'data')
+	/**
+	* Subscribe the listeners that we just defined to the 
+	"temperature" and "humidity" events
+	*/
+	subscribe(pushData, 'data')
 
 
-socket.on('disconnect', () =>
-{
-/**
- * Finally, when the connection is closed, 
-unsubscribe the listeners from their events
- */
-	unsubscribe(pushData, 'data')
+	socket.on('disconnect', () =>
+	{
+		/**
+		 * Finally, when the connection is closed, 
+		unsubscribe the listeners from their events
+		 */
+		unsubscribe(pushData, 'data')
+	})
 })
 
 /**
