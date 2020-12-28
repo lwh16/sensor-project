@@ -1,0 +1,38 @@
+app.get('/data/history', function(req, res)
+{
+	database_ops.fetchReadings('data', 50, (err, results) =>
+	{
+		if (err)
+		{
+			console.error(err)
+			return res.status(500).end()
+		}
+		
+		res.json(results.reverse())
+	})
+})
+
+
+
+const fetchDataHistory = () =>
+{
+	//First call the API used to hold the historical database readings
+	fetch('data/history')
+	.then(results =>
+	{
+		return results.json()
+	})
+	.then(data => 
+	{
+		data.forEach(reading =>
+		{
+			//convert the data readings into ISO Z
+			const time = new Date(reading.createdAt + 'Z')
+			const formattedTime = time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds()
+			pushData(dataChartConfig.data.labels, formattedTime, 100)
+			pushData(dataChartConfig.data.datasets[0].data, reading.value, 100)
+		})
+		
+		dataChartConfig.update()
+	})
+}

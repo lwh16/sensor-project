@@ -32,6 +32,31 @@ const fetchData = () =>
 	})
 }
 
+const fetchDataHistory = () =>
+{
+	//First call the API used to hold the historical database readings
+	fetch('/data/history')
+	.then(results =>
+	{
+		return results.json()
+	})
+	.then(data => 
+	{
+		data.forEach(reading =>
+		{
+			//convert the data readings into ISO Z
+			const time = new Date(reading.createdAt + 'Z')
+			const formattedTime = time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds()
+			pushData(dataChartConfig.data.labels, formattedTime, 100)
+			pushData(dataChartConfig.data.datasets[0].data, reading.value, 100)
+		})
+		
+		dataChartConfig.update()
+	})
+}
+
+
+
 const pushData = (arr, value, maxLen) =>
 {
 	arr.push(value)
@@ -44,8 +69,9 @@ const pushData = (arr, value, maxLen) =>
 
 setInterval(() =>
 {
-	fetchData()
-}, 1000)
+	fetchDataHistory()
+}, 2000)
+
 
 
 const temperatureCanvasCtx = document.getElementById('temperature-chart').getContext('2d')
@@ -56,7 +82,7 @@ const temperatureCanvasCtx = document.getElementById('temperature-chart').getCon
 const dataChartConfig = new Chart(temperatureCanvasCtx,
 {
 
-	type: 'bar',
+	type: 'line',
 	data: {
 
 		labels: [],

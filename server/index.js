@@ -26,7 +26,7 @@ app.get('/data', function(req, res)
 
 app.get('/data/history', function(req, res)
 {
-	database_ops.fetchReadings('data', 50, (err, results) =>
+	database_ops.fetchReadings('data', 100, (err, results) =>
 	{
 		if (err)
 		{
@@ -37,6 +37,41 @@ app.get('/data/history', function(req, res)
 		res.json(results.reverse())
 	})
 })
+
+app.get('/data/range', function(req, res)
+{
+	const {start, end} = req.query
+	database_ops.fetchReadingsBetweenTime('data', start, end, (err, results) =>
+	{
+		if (err)
+		{
+			console.error(err)
+			return res.status(500).end()
+		}
+		res.json(results)
+	})
+})
+
+app.get('/data/average', function (req, res)
+{
+	const {start, end} = req.query
+	database_ops.getAvgReadingBetweenTime('data', start, end, (err, results) =>
+	{
+		if (err)
+		{
+			console.error(err)
+			return res.status(500).end()
+		}
+		
+		res.json
+		({
+			value: results['avg(value)']
+		})
+	})
+})
+			
+		
+
 
 app.listen(3000, function()
 {
