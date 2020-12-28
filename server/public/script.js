@@ -57,6 +57,7 @@ const fetchDataHistory = () =>
 
 function getParameterByName (name)
 {
+	//pulled from tutorial
 	const url = window.location.href
 	name = name.replace(/[\[\]]/g, '\\$&')
 	const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
@@ -68,12 +69,12 @@ function getParameterByName (name)
 	return decodeURIComponent(results[2].replace(/\+/g, ''))
 }
 
-const fetchTemperatureRange = () =>
+const fetchDataRange = () =>
 {
 	const start = getParameterByName('start')
 	const end = getParameterByName('end')
 
-	fetch(`/temperature/range?start=${start}&end=${end}`).then(results =>
+	fetch(`/data/range?start=${start}&end=${end}`).then(results =>
        {
 		return results.json()
 	})
@@ -82,23 +83,23 @@ const fetchTemperatureRange = () =>
 	{
   		data.forEach(reading =>
 		{
-    			const time = new Date(reading.createdAt + 'Z')
-    			const formattedTime = time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds()
-     			pushData(temperatureChartConfig.data.labels, formattedTime, 10)
-   			pushData(temperatureChartConfig.data.datasets[0].data, reading.value, 10)
+			const time = new Date(reading.createdAt + 'Z')
+			const formattedTime = time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds()
+			pushData(dataChartConfig.data.labels, formattedTime, 100)
+			pushData(dataChartConfig.data.datasets[0].data, reading.value, 100)
   		})
-  		temperatureChart.update()
+  		dataChartConfig.update()
 	})
 
 
-	fetch(`/temperature/average?start=${start}&end=${end}`).then(results =>
+	fetch(`/data/average?start=${start}&end=${end}`).then(results =>
 	{
  		return results.json()
 	})
 	
 	.then(data =>
       	{
-  		temperatureDisplay.innerHTML = '<strong>' + data.value + '</strong>'
+  		dataDisplay.innerHTML = '<strong>' + data.value + '</strong>'
 	})
 }
 
@@ -112,11 +113,12 @@ const pushData = (arr, value, maxLen) =>
 	}
 }
 
+/*
 setInterval(() =>
 {
 	fetchDataHistory()
 }, 2000)
-
+*/
 
 
 const temperatureCanvasCtx = document.getElementById('temperature-chart').getContext('2d')
@@ -153,3 +155,19 @@ const dataChartConfig = new Chart(temperatureCanvasCtx,
 		}
 	}
 })
+
+if (!getParameterByName('start') && !getParameterByName('end'))
+{
+	setInterval(() =>
+	{
+		fetchData()
+	},2000)
+	fetchDataHistory()
+}
+
+else
+{
+	fetchDataRange()
+}
+	
+	
