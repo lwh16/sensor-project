@@ -9,9 +9,12 @@
 //get the text reader function
 const accessInformation = require('./Access_Information')
 const database_ops = require('./database_ops')
+const {notify} = require('./notifier')
 
 //Instantiate the cache
-var cache = null
+const cache = {
+	data : 0
+}
 
 //get a function which pulls this information every 5 secs
 
@@ -26,7 +29,14 @@ setInterval(() =>
 		
 		//if no error, then set the readings from database
 		database_ops.insertReading('data',data)
-		cache = data
+		
+		//compare these readings to the previous ones
+		if (cache.data !== data)
+		{
+			notify(data, 'data')
+		}
+
+		cache.data = data
 	})
 }, 2000)
 
